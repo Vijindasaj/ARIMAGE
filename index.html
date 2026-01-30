@@ -16,14 +16,12 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: transparent;
     }
 
     a-scene {
       width: 100%;
       height: 100%;
       position: fixed;
-      background: transparent !important;
     }
   </style>
 </head>
@@ -39,12 +37,11 @@
   renderer="colorManagement: true"
 >
   <a-assets>
-    <video
+    <video 
       id="arvideo"
       src="video.mp4"
       loop
       autoplay
-      muted
       playsinline
       webkit-playsinline
       preload="auto"
@@ -72,29 +69,22 @@
 const video = document.querySelector("#arvideo");
 const target = document.querySelector("#target");
 
-// Ensure video plays with audio automatically when target detected
-target.addEventListener("targetFound", async () => {
-  try {
-    // Unmute and play
-    video.muted = false;
-    await video.play();
-    console.log("Video playing with audio");
-  } catch(err) {
-    console.log("Autoplay failed, trying muted fallback", err);
+// Play video automatically when target detected
+target.addEventListener("targetFound", () => {
+  video.currentTime = 0;
+  video.muted = false; // unmute audio
+  video.play().catch(err => {
+    // Fallback if autoplay fails (browser restriction)
+    console.log("Autoplay error, playing muted:", err);
     video.muted = true;
     video.play();
-  }
+  });
 });
 
+// Pause when target lost
 target.addEventListener("targetLost", () => {
   video.pause();
 });
-
-// Make camera feed visible behind video
-const scene = document.querySelector("a-scene");
-if (scene.renderer) {
-  scene.renderer.setClearColor(0x000000, 0); // transparent background
-}
 </script>
 
 </body>
