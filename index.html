@@ -16,6 +16,7 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
+      background: black;
     }
 
     a-scene {
@@ -24,16 +25,22 @@
       position: fixed;
     }
 
-    /* Make MindAR camera feed visible behind video */
-    canvas[mindar-scene] {
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* Optional: button style */
+    #playAudioBtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 10px 20px;
+      font-size: 16px;
     }
   </style>
 </head>
 
 <body>
+
+<!-- Optional: Mobile Audio Button -->
+<button id="playAudioBtn">Play Audio</button>
 
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
@@ -43,13 +50,12 @@
   device-orientation-permission-ui="enabled: false"
   renderer="colorManagement: true"
 >
-  <!-- Video asset -->
+  <!-- Video Asset -->
   <a-assets>
     <video 
       id="arvideo"
       src="video.mp4"
       loop
-      muted
       playsinline
       webkit-playsinline
       preload="auto"
@@ -76,16 +82,21 @@
 <script>
   const video = document.querySelector("#arvideo");
   const target = document.querySelector("#target");
+  const btn = document.querySelector("#playAudioBtn");
 
-  target.addEventListener("targetFound", () => {
-    video.currentTime = 0;
-    video.play().then(() => {
-      console.log("Video playing");
-    }).catch(err => {
-      console.log("Play error:", err);
-    });
+  // Mobile: unlock audio on user click
+  btn.addEventListener("click", () => {
+    video.play().catch(err => console.log("Play error:", err));
+    btn.style.display = "none"; // hide button after click
   });
 
+  // Play video when target detected
+  target.addEventListener("targetFound", () => {
+    video.currentTime = 0;
+    video.play().catch(err => console.log("Play error:", err));
+  });
+
+  // Pause video when target lost
   target.addEventListener("targetLost", () => {
     video.pause();
   });
