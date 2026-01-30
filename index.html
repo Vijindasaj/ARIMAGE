@@ -52,14 +52,16 @@
   <!-- Camera -->
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <!-- Image Target -->
-  <a-entity id="target" mindar-image-target="targetIndex: 0">
+  <!-- Image Target with Video Child -->
+  <a-entity mindar-image-target="targetIndex: 0">
+    <!-- The video plane is positioned at 0 0 0 relative to the detected image -->
     <a-video
       id="videoPlane"
       src="#arvideo"
-      width="1"
-      height="0.75"
-      position="0 0 0">
+      width="1"          <!-- match the width of your printed image -->
+      height="0.75"      <!-- match the height of your printed image -->
+      position="0 0 0"   <!-- relative to the target -->
+      rotation="0 0 0">
     </a-video>
   </a-entity>
 
@@ -67,21 +69,21 @@
 
 <script>
 const video = document.querySelector("#arvideo");
-const target = document.querySelector("#target");
+const target = document.querySelector("[mindar-image-target]");
 
-// Play video automatically when target detected
+// Play video when target is detected
 target.addEventListener("targetFound", () => {
   video.currentTime = 0;
   video.muted = false; // unmute audio
   video.play().catch(err => {
-    // Fallback if autoplay fails (browser restriction)
+    // Fallback if autoplay fails
     console.log("Autoplay error, playing muted:", err);
     video.muted = true;
     video.play();
   });
 });
 
-// Pause when target lost
+// Pause video when target lost
 target.addEventListener("targetLost", () => {
   video.pause();
 });
