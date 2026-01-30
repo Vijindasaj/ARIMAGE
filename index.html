@@ -16,12 +16,19 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: black;
     }
+
     a-scene {
       width: 100%;
       height: 100%;
       position: fixed;
+    }
+
+    /* Make MindAR camera feed visible behind video */
+    canvas[mindar-scene] {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   </style>
 </head>
@@ -29,30 +36,33 @@
 <body>
 
 <a-scene
-  mindar-image="imageTargetSrc: targets.mind;"
+  mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
   embedded
   color-space="sRGB"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
+  renderer="colorManagement: true"
 >
-
+  <!-- Video asset -->
   <a-assets>
     <video 
       id="arvideo"
       src="video.mp4"
-      preload="auto"
       loop
       muted
       playsinline
-      webkit-playsinline>
+      webkit-playsinline
+      preload="auto"
+      crossorigin="anonymous">
     </video>
   </a-assets>
 
+  <!-- Camera -->
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <!-- TARGET -->
+  <!-- Image Target -->
   <a-entity id="target" mindar-image-target="targetIndex: 0">
-    <a-video 
+    <a-video
       id="videoPlane"
       src="#arvideo"
       width="1"
@@ -69,12 +79,22 @@
 
   target.addEventListener("targetFound", () => {
     video.currentTime = 0;
-    video.play();
+    video.play().then(() => {
+      console.log("Video playing");
+    }).catch(err => {
+      console.log("Play error:", err);
+    });
   });
 
   target.addEventListener("targetLost", () => {
     video.pause();
   });
+
+  // Force camera feed visible behind video
+  const scene = document.querySelector("a-scene");
+  if (scene.renderer) {
+    scene.renderer.setClearColor(0x000000, 0); // transparent background
+  }
 </script>
 
 </body>
