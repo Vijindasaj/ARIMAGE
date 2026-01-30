@@ -16,31 +16,19 @@
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: black;
+      background: transparent;
     }
 
     a-scene {
       width: 100%;
       height: 100%;
       position: fixed;
-    }
-
-    /* Optional: button style */
-    #playAudioBtn {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-      padding: 10px 20px;
-      font-size: 16px;
+      background: transparent !important;
     }
   </style>
 </head>
 
 <body>
-
-<!-- Optional: Mobile Audio Button -->
-<button id="playAudioBtn">Play Audio</button>
 
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
@@ -50,12 +38,13 @@
   device-orientation-permission-ui="enabled: false"
   renderer="colorManagement: true"
 >
-  <!-- Video Asset -->
   <a-assets>
-    <video 
+    <video
       id="arvideo"
       src="video.mp4"
       loop
+      autoplay
+      muted
       playsinline
       webkit-playsinline
       preload="auto"
@@ -80,32 +69,32 @@
 </a-scene>
 
 <script>
-  const video = document.querySelector("#arvideo");
-  const target = document.querySelector("#target");
-  const btn = document.querySelector("#playAudioBtn");
+const video = document.querySelector("#arvideo");
+const target = document.querySelector("#target");
 
-  // Mobile: unlock audio on user click
-  btn.addEventListener("click", () => {
-    video.play().catch(err => console.log("Play error:", err));
-    btn.style.display = "none"; // hide button after click
-  });
-
-  // Play video when target detected
-  target.addEventListener("targetFound", () => {
-    video.currentTime = 0;
-    video.play().catch(err => console.log("Play error:", err));
-  });
-
-  // Pause video when target lost
-  target.addEventListener("targetLost", () => {
-    video.pause();
-  });
-
-  // Force camera feed visible behind video
-  const scene = document.querySelector("a-scene");
-  if (scene.renderer) {
-    scene.renderer.setClearColor(0x000000, 0); // transparent background
+// Ensure video plays with audio automatically when target detected
+target.addEventListener("targetFound", async () => {
+  try {
+    // Unmute and play
+    video.muted = false;
+    await video.play();
+    console.log("Video playing with audio");
+  } catch(err) {
+    console.log("Autoplay failed, trying muted fallback", err);
+    video.muted = true;
+    video.play();
   }
+});
+
+target.addEventListener("targetLost", () => {
+  video.pause();
+});
+
+// Make camera feed visible behind video
+const scene = document.querySelector("a-scene");
+if (scene.renderer) {
+  scene.renderer.setClearColor(0x000000, 0); // transparent background
+}
 </script>
 
 </body>
