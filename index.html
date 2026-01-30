@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AR Photo</title>
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+</head>
+
+<body>
+
+<a-scene
+  mindar-image="imageTargetSrc: targets.mind;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+  embedded
+  color-space="sRGB"
+  renderer="colorManagement: true, physicallyCorrectLights"
+>
+
+  <a-assets>
+    <video id="arvideo" src="video.mp4" loop muted autoplay></video>
+  </a-assets>
+
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  <a-entity mindar-image-target="targetIndex: 0">
+    <a-video
+      src="#arvideo"
+      width="1"
+      height="0.75"
+      position="0 0 0">
+    </a-video>
+  </a-entity>
+
+</a-scene>
+
+</body>
+</html>
