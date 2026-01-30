@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AR Photo</title>
+  <title>AR Photo - Auto Scale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- A-Frame -->
@@ -25,7 +25,6 @@
     }
   </style>
 </head>
-
 <body>
 
 <a-scene
@@ -49,18 +48,14 @@
     </video>
   </a-assets>
 
-  <!-- Camera -->
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <!-- Image Target with Video Child -->
-  <a-entity mindar-image-target="targetIndex: 0">
-    <!-- The video plane is positioned at 0 0 0 relative to the detected image -->
+  <!-- Image target -->
+  <a-entity id="target" mindar-image-target="targetIndex: 0">
     <a-video
       id="videoPlane"
       src="#arvideo"
-      width="1"          <!-- match the width of your printed image -->
-      height="0.75"      <!-- match the height of your printed image -->
-      position="0 0 0"   <!-- relative to the target -->
+      position="0 0 0"
       rotation="0 0 0">
     </a-video>
   </a-entity>
@@ -69,18 +64,28 @@
 
 <script>
 const video = document.querySelector("#arvideo");
-const target = document.querySelector("[mindar-image-target]");
+const target = document.querySelector("#target");
+const videoPlane = document.querySelector("#videoPlane");
 
-// Play video when target is detected
+// Auto-play video when target is found
 target.addEventListener("targetFound", () => {
   video.currentTime = 0;
-  video.muted = false; // unmute audio
+  video.muted = false;
   video.play().catch(err => {
-    // Fallback if autoplay fails
-    console.log("Autoplay error, playing muted:", err);
+    // fallback autoplay restrictions
     video.muted = true;
     video.play();
   });
+
+  // Auto-scale video to match target
+  const targetEntity = target.components['mindar-image-target'];
+  if (targetEntity) {
+    const width = targetEntity.width || 1;
+    const height = targetEntity.height || 1;
+    videoPlane.setAttribute('width', width);
+    videoPlane.setAttribute('height', height);
+    videoPlane.setAttribute('position', `0 0 0`);
+  }
 });
 
 // Pause video when target lost
