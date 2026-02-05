@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>AR Photo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-
-  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: transparent;
     }
-
     a-scene {
+      width: 100%;
+      height: 100%;
       position: fixed;
-      inset: 0;
     }
   </style>
 </head>
@@ -34,71 +29,54 @@
   mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
-  renderer="antialias: true; colorManagement: true;"
+  embedded
 >
 
   <a-assets>
+    <!-- VIDEO STARTS MUTED -->
     <video
-      id="arvideo"
+      id="arVideo"
       src="video.mp4"
       loop
-      autoplay
+      muted
       playsinline
-      webkit-playsinline
       preload="auto"
-      crossorigin="anonymous">
-    </video>
+      crossorigin="anonymous"
+    ></video>
   </a-assets>
 
-  <!-- Camera (leave as-is) -->
-  <a-camera
-    position="0 0 0"
-    look-controls="enabled: false"
-    wasd-controls="enabled: false">
-  </a-camera>
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <!-- Image Target -->
-  <a-entity id="target" mindar-image-target="targetIndex: 0">
-
-    <!-- Video exactly where image is -->
+  <a-entity mindar-image-target="targetIndex: 0">
     <a-video
-      id="videoPlane"
-      src="#arvideo"
-      position="0 0 0.01"
-      rotation="0 0 0"
-      material="shader: flat; depthTest: false;">
-    </a-video>
-
+      src="#arVideo"
+      width="1"
+      height="0.75"
+      position="0 0 0"
+    ></a-video>
   </a-entity>
 
 </a-scene>
 
 <script>
-const video = document.querySelector("#arvideo");
-const target = document.querySelector("#target");
-const videoPlane = document.querySelector("#videoPlane");
+  const video = document.getElementById("arVideo");
+  const target = document.querySelector("[mindar-image-target]");
 
-target.addEventListener("targetFound", () => {
-  video.currentTime = 0;
-  video.muted = false;
-  video.play().catch(() => {
-    video.muted = true;
+  // Ensure NOTHING plays on load
+  video.pause();
+  video.muted = true;
+
+  target.addEventListener("targetFound", () => {
+    video.muted = false;   // enable sound
+    video.currentTime = 0;
     video.play();
   });
 
-  // 🔥 Match video size EXACTLY to image
-  const t = target.components["mindar-image-target"];
-  if (t?.width && t?.height) {
-    videoPlane.setAttribute("width", t.width);
-    videoPlane.setAttribute("height", t.height);
-  }
-});
-
-target.addEventListener("targetLost", () => {
-  video.pause();
-});
+  target.addEventListener("targetLost", () => {
+    video.pause();
+    video.currentTime = 0;
+  });
 </script>
 
 </body>
 </html>
-
