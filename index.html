@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AR Image</title>
+  <title>AR Photo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- A-Frame -->
@@ -18,15 +18,12 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: black;
+      background: transparent;
     }
 
     a-scene {
-      width: 100%;
-      height: 100%;
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
     }
   </style>
 </head>
@@ -53,7 +50,7 @@
     </video>
   </a-assets>
 
-  <!-- Camera (DO NOT TOUCH) -->
+  <!-- Camera (leave as-is) -->
   <a-camera
     position="0 0 0"
     look-controls="enabled: false"
@@ -62,12 +59,16 @@
 
   <!-- Image Target -->
   <a-entity id="target" mindar-image-target="targetIndex: 0">
+
+    <!-- Video exactly where image is -->
     <a-video
       id="videoPlane"
       src="#arvideo"
-      position="0 0 0"
-      rotation="0 0 0">
+      position="0 0 0.01"
+      rotation="0 0 0"
+      material="shader: flat; depthTest: false;">
     </a-video>
+
   </a-entity>
 
 </a-scene>
@@ -85,9 +86,9 @@ target.addEventListener("targetFound", () => {
     video.play();
   });
 
-  // SCALE VIDEO EXACTLY TO IMAGE SIZE
+  // 🔥 Match video size EXACTLY to image
   const t = target.components["mindar-image-target"];
-  if (t && t.width && t.height) {
+  if (t?.width && t?.height) {
     videoPlane.setAttribute("width", t.width);
     videoPlane.setAttribute("height", t.height);
   }
