@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>AR Image</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
@@ -22,17 +22,11 @@
     }
 
     a-scene {
-      position: fixed !important;
+      width: 100%;
+      height: 100%;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100vw !important;
-      height: 100vh !important;
-    }
-
-    canvas {
-      width: 100vw !important;
-      height: 100vh !important;
-      object-fit: cover; /* THIS IS THE KEY FIX */
     }
   </style>
 </head>
@@ -41,10 +35,9 @@
 
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-  embedded
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
-  renderer="colorManagement: true; physicallyCorrectLights: true;"
+  renderer="antialias: true; colorManagement: true;"
 >
 
   <a-assets>
@@ -60,7 +53,7 @@
     </video>
   </a-assets>
 
-  <!-- Camera -->
+  <!-- Camera (DO NOT TOUCH) -->
   <a-camera
     position="0 0 0"
     look-controls="enabled: false"
@@ -92,9 +85,9 @@ target.addEventListener("targetFound", () => {
     video.play();
   });
 
-  // Auto-scale video EXACTLY to image size
+  // SCALE VIDEO EXACTLY TO IMAGE SIZE
   const t = target.components["mindar-image-target"];
-  if (t) {
+  if (t && t.width && t.height) {
     videoPlane.setAttribute("width", t.width);
     videoPlane.setAttribute("height", t.height);
   }
