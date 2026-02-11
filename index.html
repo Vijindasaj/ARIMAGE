@@ -46,78 +46,6 @@
       to { transform: scale(1.05) translateY(-10px); }
     }
 
-    /* ===== Cinematic Credit Strip ===== */
-    .name-strip {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 240px;
-      height: 100vh;
-      overflow: hidden;
-      z-index: -1;
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-    }
-
-    .name-track {
-      display: flex;
-      flex-direction: column;
-      animation: creditScroll 65s linear infinite;
-      will-change: transform;
-    }
-
-    .names {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .names span {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      text-shadow:
-        0 0 6px rgba(255,255,255,0.25),
-        0 0 14px rgba(108,99,255,0.25);
-    }
-
-    .names span:first-child {
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 4px;
-      opacity: 0.9;
-    }
-
-    @keyframes creditScroll {
-      0% { transform: translateY(50%); }
-      100% { transform: translateY(-50%); }
-    }
-
-    /* Fade Mask */
-    .name-strip::before,
-    .name-strip::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 200px;
-      pointer-events: none;
-    }
-
-    .name-strip::before {
-      top: 0;
-      background: linear-gradient(to bottom, var(--bg), transparent);
-    }
-
-    .name-strip::after {
-      bottom: 0;
-      background: linear-gradient(to top, var(--bg), transparent);
-    }
-
     /* ===== Center Layout ===== */
     .container {
       height: 100%;
@@ -169,6 +97,78 @@
     .cta:active {
       transform: scale(0.96);
     }
+
+    /* ===== Center Credit Roll ===== */
+    .credit-wrapper {
+      position: relative;
+      margin-top: 50px;
+      width: 100%;
+      max-width: 300px;
+      height: 140px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .credit-track {
+      display: flex;
+      flex-direction: column;
+      animation: creditScroll 60s linear infinite;
+      will-change: transform;
+    }
+
+    .credits {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .credits span {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      text-shadow:
+        0 0 6px rgba(255,255,255,0.18),
+        0 0 14px rgba(108,99,255,0.25);
+    }
+
+    .credits span:first-child {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      opacity: 0.9;
+    }
+
+    @keyframes creditScroll {
+      0% { transform: translateY(50%); }
+      100% { transform: translateY(-50%); }
+    }
+
+    /* Fade mask */
+    .credit-wrapper::before,
+    .credit-wrapper::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .credit-wrapper::before {
+      top: 0;
+      background: linear-gradient(to bottom, var(--bg), transparent);
+    }
+
+    .credit-wrapper::after {
+      bottom: 0;
+      background: linear-gradient(to top, var(--bg), transparent);
+    }
+
   </style>
 </head>
 
@@ -176,49 +176,50 @@
 
   <div class="bg"></div>
 
-  <!-- Scrolling Names -->
-  <div class="name-strip">
-    <div class="name-track">
-
-      <div class="names">
-        <span>DIRECTED BY</span>
-        <span>AARAV</span>
-        <span>ADITYA</span>
-        <span>ANANYA</span>
-        <span>DIYA</span>
-        <span>ROHAN</span>
-        <span>VISHNU</span>
-        <span>ARYAN</span>
-        <span>KRISHNA</span>
-        <span>NIHAL</span>
-        <span>SNEHA</span>
-      </div>
-
-      <!-- Duplicate for seamless loop -->
-      <div class="names">
-        <span>DIRECTED BY</span>
-        <span>AARAV</span>
-        <span>ADITYA</span>
-        <span>ANANYA</span>
-        <span>DIYA</span>
-        <span>ROHAN</span>
-        <span>VISHNU</span>
-        <span>ARYAN</span>
-        <span>KRISHNA</span>
-        <span>NIHAL</span>
-        <span>SNEHA</span>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Center Content -->
   <div class="container">
     <h1>2K25-26</h1>
     <p>
       This redirects you 2 the scanner page
     </p>
+
     <a href="ar.html" class="cta">SCAN</a>
+
+    <!-- Scrolling Credits -->
+    <div class="credit-wrapper">
+      <div class="credit-track">
+
+        <div class="credits">
+          <span>DIRECTED BY</span>
+          <span>AARAV</span>
+          <span>ADITYA</span>
+          <span>ANANYA</span>
+          <span>DIYA</span>
+          <span>ROHAN</span>
+          <span>VISHNU</span>
+          <span>ARYAN</span>
+          <span>KRISHNA</span>
+          <span>NIHAL</span>
+          <span>SNEHA</span>
+        </div>
+
+        <!-- Duplicate for seamless loop -->
+        <div class="credits">
+          <span>DIRECTED BY</span>
+          <span>AARAV</span>
+          <span>ADITYA</span>
+          <span>ANANYA</span>
+          <span>DIYA</span>
+          <span>ROHAN</span>
+          <span>VISHNU</span>
+          <span>ARYAN</span>
+          <span>KRISHNA</span>
+          <span>NIHAL</span>
+          <span>SNEHA</span>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
 </body>
