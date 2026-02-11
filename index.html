@@ -46,35 +46,39 @@
       to { transform: scale(1.05) translateY(-10px); }
     }
 
-    /* ===== Full Page Scrolling Names ===== */
-    .credits {
+    /* ===== Dual Credits Layout ===== */
+    .credits-wrapper {
       position: fixed;
       inset: 0;
       display: flex;
-      justify-content: center;
-      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 5vw;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.08; /* subtle background effect */
+      opacity: 0.10;
     }
 
-    .credit-track {
+    .column {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      animation: scrollUp 45s linear infinite;
-    }
-
-    .credit-track span {
-      font-size: 20px;
+      gap: 26px;
+      font-size: 18px;
       font-weight: 600;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       color: white;
       text-shadow:
-        0 0 10px rgba(255,255,255,0.4),
-        0 0 20px rgba(108,99,255,0.5);
+        0 0 8px rgba(255,255,255,0.4),
+        0 0 18px rgba(108,99,255,0.4);
+      white-space: nowrap;
+    }
+
+    .scroll-up {
+      animation: scrollUp 60s linear infinite;
+    }
+
+    .scroll-down {
+      animation: scrollDown 60s linear infinite;
     }
 
     @keyframes scrollUp {
@@ -82,7 +86,12 @@
       to { transform: translateY(-100%); }
     }
 
-    /* ===== Center Layout ===== */
+    @keyframes scrollDown {
+      from { transform: translateY(-100%); }
+      to { transform: translateY(100%); }
+    }
+
+    /* ===== Center Content ===== */
     .container {
       position: relative;
       z-index: 2;
@@ -114,7 +123,6 @@
       font-size: 1.05rem;
     }
 
-    /* ===== Button ===== */
     .cta {
       margin-top: 40px;
       padding: 16px 34px;
@@ -143,11 +151,11 @@
 
   <div class="bg"></div>
 
-  <!-- Full page scrolling credits -->
-  <div class="credits">
-    <div class="credit-track">
+  <!-- Dual scrolling names -->
+  <div class="credits-wrapper">
 
-      <span>DIRECTED BY</span>
+    <!-- LEFT (scroll up) -->
+    <div class="column scroll-up">
       <span>AARAV</span>
       <span>ADITYA</span>
       <span>ANANYA</span>
@@ -158,29 +166,40 @@
       <span>KRISHNA</span>
       <span>NIHAL</span>
       <span>SNEHA</span>
-
-      <!-- duplicate for seamless loop -->
-      <span>DIRECTED BY</span>
       <span>AARAV</span>
       <span>ADITYA</span>
       <span>ANANYA</span>
       <span>DIYA</span>
       <span>ROHAN</span>
       <span>VISHNU</span>
-      <span>ARYAN</span>
-      <span>KRISHNA</span>
-      <span>NIHAL</span>
-      <span>SNEHA</span>
-
     </div>
+
+    <!-- RIGHT (scroll down) -->
+    <div class="column scroll-down">
+      <span>ARYAN</span>
+      <span>KRISHNA</span>
+      <span>NIHAL</span>
+      <span>SNEHA</span>
+      <span>AARAV</span>
+      <span>ADITYA</span>
+      <span>ANANYA</span>
+      <span>DIYA</span>
+      <span>ROHAN</span>
+      <span>VISHNU</span>
+      <span>ARYAN</span>
+      <span>KRISHNA</span>
+      <span>NIHAL</span>
+      <span>SNEHA</span>
+      <span>AARAV</span>
+      <span>ADITYA</span>
+    </div>
+
   </div>
 
+  <!-- Center content -->
   <div class="container">
     <h1>2K25-26</h1>
-    <p>
-      This redirects you 2 the scanner page
-    </p>
-
+    <p>This redirects you 2 the scanner page</p>
     <a href="ar.html" class="cta">SCAN</a>
   </div>
 
