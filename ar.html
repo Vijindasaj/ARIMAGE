@@ -33,7 +33,6 @@
 >
 
   <a-assets>
-    <!-- VIDEO STARTS MUTED -->
     <video
       id="arVideo"
       src="video.mp4"
@@ -49,10 +48,10 @@
 
   <a-entity mindar-image-target="targetIndex: 0">
     <a-video
+      id="arVideoPlane"
       src="#arVideo"
       width="1"
-      height="0.75"
-      position="0 0 0"
+      position="0 0 0.01"
     ></a-video>
   </a-entity>
 
@@ -60,14 +59,21 @@
 
 <script>
   const video = document.getElementById("arVideo");
+  const videoPlane = document.getElementById("arVideoPlane");
   const target = document.querySelector("[mindar-image-target]");
 
-  // Ensure NOTHING plays on load
+  // Ensure nothing plays on load
   video.pause();
   video.muted = true;
 
+  // 🔥 AUTO CALIBRATE VIDEO HEIGHT BASED ON ASPECT RATIO
+  video.addEventListener("loadedmetadata", () => {
+    const aspectRatio = video.videoHeight / video.videoWidth;
+    videoPlane.setAttribute("height", aspectRatio);
+  });
+
   target.addEventListener("targetFound", () => {
-    video.muted = false;   // enable sound
+    video.muted = false;
     video.currentTime = 0;
     video.play();
   });
@@ -80,4 +86,3 @@
 
 </body>
 </html>
-
