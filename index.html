@@ -46,22 +46,24 @@
       to { transform: scale(1.05) translateY(-10px); }
     }
 
-    /* ===== LEFT NAME STRIP ===== */
+    /* ===== Cinematic Credit Strip ===== */
     .name-strip {
       position: fixed;
       left: 0;
       top: 0;
-      width: 200px;
+      width: 240px;
       height: 100vh;
       overflow: hidden;
       z-index: -1;
       pointer-events: none;
+      display: flex;
+      align-items: center;
     }
 
     .name-track {
       display: flex;
       flex-direction: column;
-      animation: scrollNames 70s linear infinite;
+      animation: creditScroll 65s linear infinite;
       will-change: transform;
     }
 
@@ -69,20 +71,30 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 22px;
+      gap: 28px;
     }
 
     .names span {
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 1.4px;
-      color: rgba(255,255,255,0.45);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-shadow:
+        0 0 6px rgba(255,255,255,0.25),
+        0 0 14px rgba(108,99,255,0.25);
     }
 
-    @keyframes scrollNames {
-      from { transform: translateY(0%); }
-      to { transform: translateY(-50%); }
+    .names span:first-child {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      opacity: 0.9;
+    }
+
+    @keyframes creditScroll {
+      0% { transform: translateY(50%); }
+      100% { transform: translateY(-50%); }
     }
 
     /* Fade Mask */
@@ -92,7 +104,7 @@
       position: absolute;
       left: 0;
       width: 100%;
-      height: 150px;
+      height: 200px;
       pointer-events: none;
     }
 
@@ -157,14 +169,6 @@
     .cta:active {
       transform: scale(0.96);
     }
-
-    /* Hide name strip on small screens */
-    @media(max-width: 900px){
-      .name-strip {
-        display: none;
-      }
-    }
-
   </style>
 </head>
 
@@ -175,7 +179,9 @@
   <!-- Scrolling Names -->
   <div class="name-strip">
     <div class="name-track">
+
       <div class="names">
+        <span>DIRECTED BY</span>
         <span>AARAV</span>
         <span>ADITYA</span>
         <span>ANANYA</span>
@@ -186,11 +192,11 @@
         <span>KRISHNA</span>
         <span>NIHAL</span>
         <span>SNEHA</span>
-        <!-- add all 65 names here -->
       </div>
 
       <!-- Duplicate for seamless loop -->
       <div class="names">
+        <span>DIRECTED BY</span>
         <span>AARAV</span>
         <span>ADITYA</span>
         <span>ANANYA</span>
@@ -202,15 +208,16 @@
         <span>NIHAL</span>
         <span>SNEHA</span>
       </div>
+
     </div>
   </div>
 
+  <!-- Center Content -->
   <div class="container">
     <h1>2K25-26</h1>
     <p>
       This redirects you 2 the scanner page
     </p>
-
     <a href="ar.html" class="cta">SCAN</a>
   </div>
 
