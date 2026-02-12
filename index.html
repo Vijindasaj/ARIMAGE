@@ -1,244 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>MANJATTI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>MANJATTI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root {
-      --bg: #0b0b0d;
-      --text: #f2f2f2;
-      --muted: #a1a1aa;
-      --accent: #6c63ff;
-    }
+<style>
+:root {
+  --bg: #0b0b0d;
+  --text: #f2f2f2;
+  --muted: #a1a1aa;
+  --accent: #6c63ff;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      height: 100vh;
-      overflow: hidden;
-    }
+body {
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
 
-    /* ===== Background ===== */
-    .bg {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background:
-        radial-gradient(circle at 30% 40%, rgba(108,99,255,0.15), transparent 30%),
-        radial-gradient(circle at 60% 70%, rgba(255,255,255,0.06), transparent 40%);
-      animation: floatBG 12s ease-in-out infinite alternate;
-    }
+/* ===== Animated Background ===== */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(108,99,255,0.15), transparent 30%),
+    radial-gradient(circle at 60% 70%, rgba(255,255,255,0.06), transparent 40%);
+  animation: floatBG 14s ease-in-out infinite alternate;
+}
 
-    @keyframes floatBG {
-      from { transform: scale(1) translateY(0); }
-      to { transform: scale(4.05) translateY(-10px); }
-    }
+@keyframes floatBG {
+  from { transform: scale(1) translateY(0); }
+  to { transform: scale(1.05) translateY(-10px); }
+}
 
-    /* ===== Credits Near Center ===== */
-    .credits-wrapper {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-      z-index: -5;
-      opacity: 0.12;
-    }
+/* ===== Credits Section ===== */
+.credits-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+}
 
-    .credits-inner {
-      width: 75vw;
-      max-width: 500px;
-      display: flex;
-      justify-content: space-between;
-    }
+.credits-inner {
+  display: flex;
+  gap: 140px; /* BIGGER GAP BETWEEN COLUMNS */
+  align-items: center;
+  position: relative;
+}
 
-    .column {
-     display: flex;
-     flex-direction: column;
-     gap: 34px; /* increased spacing */
-     padding: 40px 0; /* extra breathing space */
-     font-size: 16px;
-     font-weight: 600;
-     letter-spacing: 3px;
-     text-transform: uppercase;
-     color: white;
-    white-space: nowrap;
-    }
+/* Fade mask top & bottom */
+.credits-wrapper::before,
+.credits-wrapper::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 120px;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.credits-wrapper::before {
+  top: 0;
+  background: linear-gradient(to bottom, #0b0b0d, transparent);
+}
+
+.credits-wrapper::after {
+  bottom: 0;
+  background: linear-gradient(to top, #0b0b0d, transparent);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 48px; /* MUCH MORE SPACE BETWEEN NAMES */
+  padding: 80px 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: white;
+  white-space: nowrap;
+
   text-shadow:
-    0 0 6px rgba(255,255,255,0.35),
-    0 0 14px rgba(108,99,255,0.35);
+    0 0 8px rgba(255,255,255,0.35),
+    0 0 18px rgba(108,99,255,0.35);
 
-  filter: blur(0.4px); /* very subtle motion softness */
-     }
+  filter: blur(0.3px);
+}
 
+.scroll-up {
+  animation: scrollUp 36s linear infinite;
+  will-change: transform;
+}
 
-    .scroll-up {
-      animation: scrollUp 30s linear infinite;
-    }
+.scroll-down {
+  animation: scrollDown 36s linear infinite;
+  will-change: transform;
+}
 
-    .scroll-down {
-      animation: scrollDown 30s linear infinite;
-    }
+@keyframes scrollUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(-100%); }
+}
 
-    @keyframes scrollUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(-100%); }
-    }
+@keyframes scrollDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
 
-    @keyframes scrollDown {
-      from { transform: translateY(-100%); }
-      to { transform: translateY(100%); }
-    }
+/* ===== Center Content ===== */
+.container {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  animation: fadeUp 1.2s ease forwards;
+}
 
-    /* ===== Center Content ===== */
-    .container {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px;
-      animation: fadeUp 1.2s ease forwards;
-    }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
 
-    h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      margin-bottom: 14px;
-    }
+p {
+  color: var(--muted);
+  max-width: 520px;
+  font-size: 1.05rem;
+}
 
-    p {
-      color: var(--muted);
-      max-width: 520px;
-      font-size: 1.05rem;
-    }
+.cta {
+  margin-top: 40px;
+  padding: 16px 34px;
+  background: var(--accent);
+  border-radius: 999px;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: transform 0.35s ease, box-shadow 0.38s ease;
+}
 
-    .cta {
-      margin-top: 40px;
-      padding: 16px 34px;
-      background: var(--accent);
-      border-radius: 999px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: transform 0.35s ease, box-shadow 0.38s ease;
-    }
+.cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(108,99,255,0.4);
+}
 
-    .cta:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 40px rgba(108,99,255,0.4);
-    }
+.cta:active {
+  transform: scale(0.96);
+}
 
-    .cta:active {
-      transform: scale(0.96);
-    }
-
-  </style>
+</style>
 </head>
 
 <body>
 
-  <div class="bg"></div>
+<div class="bg"></div>
 
-  <!-- Credits -->
-  <div class="credits-wrapper">
-    <div class="credits-inner">
+<!-- Credits -->
+<div class="credits-wrapper">
+  <div class="credits-inner">
 
-      <div class="column scroll-up">
-        <span>John Paul</span>
-        <span>Abener</span>
-        <span>Abhinav J</span>
-        <span>Abhinav K.A</span>
-        <span>Abin</span>
-        <span>Abhinav Saijo</span>
-        <span>Adarsh</span>
-        <span>Akash</span>
-        <span>Alan</span>
-        <span>Alfrence</span>
-        <span>Alwin</span>
-        <span>AnandhaKrishnan</span>
-        <span>Anaswar</span>
-        <span>Anto</span>
-        <span>Antony</span>
-        <span>Arnold</span>
-        <span>Asvin</span>
-        <span>Avin</span>
-        <span>Belwin</span>
-        <span>Bhanumithran</span>
-        <span>Bringston</span>
-        <span>Denil</span>
-        <span>Godson</span>
-        <span>Godwin</span>
-        <span>Goutham</span>
-        <span>Harshit</span>
-        <span>Hrishikesh</span>
-        <span>Anfino</span>
-        <span>Justin</span>
-        <span>Maheswar</span>
-      </div>
-
-      <div class="column scroll-down">
-        <span>Kevin</span>
-        <span>Keyin</span>
-        <span>Manual</span>
-        <span>Nilav</span>
-        <span>Nivedh</span>
-        <span>Prajith</span>
-        <span>Rajath</span>
-        <span>Sanal</span>
-        <span>Sanjay</span>
-        <span>Sanjo</span>
-        <span>Sharon</span>
-        <span>Sreenath</span>
-        <span>Sreerang</span>
-        <span>Tom</span>
-        <span>Vijin</span>
-        <span>Vishnu</span>
-        <span>Adwitiya</span>
-        <span>Anat</span>
-        <span>Anusree</span>
-        <span>Archana</span>
-        <span>Aryalakshmi</span>
-        <span>Athulya</span>
-        <span>Gangalakshmi</span>
-        <span>Jereena</span>
-        <span>Joshiha</span>
-        <span>Pavitra</span>
-        <span>Sreenandha</span>
-        <span>Umadevi</span>
-        <span>Vaiga</span>
-      </div>
-
+    <div class="column scroll-up">
+      <span>John Paul</span>
+      <span>Abener</span>
+      <span>Abhinav J</span>
+      <span>Abhinav K.A</span>
+      <span>Abin</span>
+      <span>Abhinav Saijo</span>
+      <span>Adarsh</span>
+      <span>Akash</span>
+      <span>Alan</span>
+      <span>Alfrence</span>
+      <span>Alwin</span>
+      <span>AnandhaKrishnan</span>
+      <span>Anaswar</span>
+      <span>Anto</span>
+      <span>Antony</span>
+      <span>Arnold</span>
+      <span>Asvin</span>
+      <span>Avin</span>
+      <span>Belwin</span>
+      <span>Bhanumithran</span>
+      <span>Bringston</span>
+      <span>Denil</span>
+      <span>Godson</span>
+      <span>Godwin</span>
+      <span>Goutham</span>
+      <span>Harshit</span>
+      <span>Hrishikesh</span>
+      <span>Anfino</span>
+      <span>Justin</span>
+      <span>Maheswar</span>
     </div>
-  </div>
 
-  <div class="container">
-    <h1>2K25-26</h1>
-    <p>This redirects you 2 the scanner page</p>
-    <a href="ar.html" class="cta">SCAN</a>
+    <div class="column scroll-down">
+      <span>Kevin</span>
+      <span>Keyin</span>
+      <span>Manual</span>
+      <span>Nilav</span>
+      <span>Nivedh</span>
+      <span>Prajith</span>
+      <span>Rajath</span>
+      <span>Sanal</span>
+      <span>Sanjay</span>
+      <span>Sanjo</span>
+      <span>Sharon</span>
+      <span>Sreenath</span>
+      <span>Sreerang</span>
+      <span>Tom</span>
+      <span>Vijin</span>
+      <span>Vishnu</span>
+      <span>Adwitiya</span>
+      <span>Anat</span>
+      <span>Anusree</span>
+      <span>Archana</span>
+      <span>Aryalakshmi</span>
+      <span>Athulya</span>
+      <span>Gangalakshmi</span>
+      <span>Jereena</span>
+      <span>Joshiha</span>
+      <span>Pavitra</span>
+      <span>Sreenandha</span>
+      <span>Umadevi</span>
+      <span>Vaiga</span>
+    </div>
+
   </div>
+</div>
+
+<div class="container">
+  <h1>2K25-26</h1>
+  <p>This redirects you 2 the scanner page</p>
+  <a href="ar.html" class="cta">SCAN</a>
+</div>
 
 </body>
 </html>
