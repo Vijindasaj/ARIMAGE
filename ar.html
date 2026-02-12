@@ -14,17 +14,14 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: black;
+  background: transparent; /* IMPORTANT */
 }
 
-a-scene, canvas {
-  width: 100% !important;
-  height: 100% !important;
+a-scene {
   position: fixed;
-  top: 0;
-  left: 0;
+  width: 100%;
+  height: 100%;
 }
-
 .overlay-ui {
   position: fixed;
   top: 20px;
@@ -49,11 +46,12 @@ a-scene, canvas {
 </div>
 
 <a-scene
-  mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: false; uiLoading: false;"
+  mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+  color-space="sRGB"
+  renderer="colorManagement: true; physicallyCorrectLights: true"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
   embedded
-  renderer="colorManagement: true;"
 >
 
   <a-assets>
@@ -71,56 +69,34 @@ a-scene, canvas {
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
   <a-entity mindar-image-target="targetIndex: 0">
-
-    <!-- 1:1 PERFECT MATCH -->
     <a-video
       id="arVideoPlane"
       src="#arVideo"
       width="1"
       height="1"
       position="0 0 0.02"
-      material="shader: flat; transparent: true; opacity: 0;"
+      material="shader: flat;"
     ></a-video>
-
   </a-entity>
 
 </a-scene>
 
 <script>
 const video = document.getElementById("arVideo");
-const videoPlane = document.getElementById("arVideoPlane");
 const target = document.querySelector("[mindar-image-target]");
 
 video.pause();
 video.muted = true;
 
-/* When image detected */
 target.addEventListener("targetFound", () => {
   video.muted = false;
   video.currentTime = 0;
   video.play();
-
-  // Smooth fade in
-  videoPlane.setAttribute("animation", {
-    property: "material.opacity",
-    to: 1,
-    dur: 250,
-    easing: "easeOutQuad"
-  });
 });
 
-/* When image lost */
 target.addEventListener("targetLost", () => {
   video.pause();
   video.currentTime = 0;
-
-  // Smooth fade out
-  videoPlane.setAttribute("animation", {
-    property: "material.opacity",
-    to: 0,
-    dur: 200,
-    easing: "easeOutQuad"
-  });
 });
 </script>
 
