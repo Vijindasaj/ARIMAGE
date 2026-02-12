@@ -65,19 +65,24 @@
     }
 
     .column {
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: white;
-      text-shadow:
-        0 0 8px rgba(255,255,255,0.4),
-        0 0 18px rgba(108,99,255,0.4);
-      white-space: nowrap;
+     display: flex;
+     flex-direction: column;
+     gap: 34px; /* increased spacing */
+     padding: 40px 0; /* extra breathing space */
+     font-size: 16px;
+     font-weight: 600;
+     letter-spacing: 3px;
+     text-transform: uppercase;
+     color: white;
+    white-space: nowrap;
     }
+  text-shadow:
+    0 0 6px rgba(255,255,255,0.35),
+    0 0 14px rgba(108,99,255,0.35);
+
+  filter: blur(0.4px); /* very subtle motion softness */
+     }
+
 
     .scroll-up {
       animation: scrollUp 30s linear infinite;
